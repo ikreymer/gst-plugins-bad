@@ -187,6 +187,15 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
   }
 
   g_object_get (stream->ice, "agent", &agent, NULL);
+
+  // set port
+#define FIXED_PORT 10235
+  nice_agent_set_port_range (agent, stream->stream_id,
+      NICE_COMPONENT_TYPE_RTP, FIXED_PORT, FIXED_PORT);
+
+  nice_agent_set_port_range (agent, stream->stream_id,
+      NICE_COMPONENT_TYPE_RTCP, FIXED_PORT, FIXED_PORT);
+
   if (!nice_agent_gather_candidates (agent, stream->stream_id)) {
     g_object_unref (agent);
     return FALSE;
