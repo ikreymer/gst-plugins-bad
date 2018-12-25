@@ -267,6 +267,8 @@ enum
   PROP_PENDING_REMOTE_DESCRIPTION,
   PROP_STUN_SERVER,
   PROP_TURN_SERVER,
+  PROP_MIN_PORT,
+  PROP_MAX_PORT,
 };
 
 static guint gst_webrtc_bin_signals[LAST_SIGNAL] = { 0 };
@@ -3880,8 +3882,11 @@ gst_webrtc_bin_set_property (GObject * object, guint prop_id,
   switch (prop_id) {
     case PROP_STUN_SERVER:
     case PROP_TURN_SERVER:
+    case PROP_MIN_PORT:
+    case PROP_MAX_PORT:
       g_object_set_property (G_OBJECT (webrtc->priv->ice), pspec->name, value);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3938,6 +3943,8 @@ gst_webrtc_bin_get_property (GObject * object, guint prop_id,
       break;
     case PROP_STUN_SERVER:
     case PROP_TURN_SERVER:
+    case PROP_MIN_PORT:
+    case PROP_MAX_PORT:
       g_object_get_property (G_OBJECT (webrtc->priv->ice), pspec->name, value);
       break;
     default:
@@ -4108,6 +4115,20 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
           GST_TYPE_WEBRTC_ICE_GATHERING_STATE,
           GST_WEBRTC_ICE_GATHERING_STATE_NEW,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class,
+      PROP_MIN_PORT,
+      g_param_spec_uint ("min-port", "ICE candidate min port",
+          "minimum port, if any, for local rtp port range",
+          0, 65535, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class,
+      PROP_MAX_PORT,
+      g_param_spec_uint ("max-port", "ICE candidate max port",
+          "maximum port, if any, for local rtp port range",
+          0, 65535, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+
 
   /**
    * GstWebRTCBin::create-offer:
