@@ -46,6 +46,7 @@ struct _GstWebRTCICEStreamPrivate
 {
   gboolean gathered;
   GList *transports;
+  gboolean gathering_started;
 };
 
 #define gst_webrtc_ice_stream_parent_class parent_class
@@ -187,10 +188,28 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
   }
 
   g_object_get (stream->ice, "agent", &agent, NULL);
+
+  // set min and max ports RTP & RTCP port ranges if either min or max port is set
+  if (!stream->priv->gathering_started) {
+    if (stream->ice->min_rtp_port || stream->ice->max_rtp_port) {
+      nice_agent_set_port_range (agent, stream->stream_id,
+          NICE_COMPONENT_TYPE_RTP, stream->ice->min_rtp_port,
+          stream->ice->max_rtp_port);
+    }
+
+    if (stream->ice->min_rtcp_port || stream->ice->max_rtcp_port) {
+      nice_agent_set_port_range (agent, stream->stream_id,
+          NICE_COMPONENT_TYPE_RTCP, stream->ice->min_rtcp_port,
+          stream->ice->max_rtcp_port);
+    }
+  }
+
   if (!nice_agent_gather_candidates (agent, stream->stream_id)) {
     g_object_unref (agent);
     return FALSE;
   }
+  // mark as gathering started to prevent changing ports after
+  stream->priv->gathering_started = TRUE;
 
   g_object_unref (agent);
   return TRUE;

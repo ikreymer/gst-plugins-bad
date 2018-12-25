@@ -51,6 +51,11 @@ struct _GstWebRTCICE
   GHashTable                       *turn_servers;
 
   GstWebRTCICEPrivate              *priv;
+
+  guint                             min_rtp_port;
+  guint                             max_rtp_port;
+  guint                             min_rtcp_port;
+  guint                             max_rtcp_port;
 };
 
 struct _GstWebRTCICEClass
