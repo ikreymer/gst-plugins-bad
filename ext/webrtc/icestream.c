@@ -179,6 +179,20 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
   if (stream->priv->gathered)
     return TRUE;
 
+  // set port
+#define MIN_PORT 10235
+#define MAX_PORT 10236
+  nice_agent_set_port_range (agent, stream->stream_id,
+      NICE_COMPONENT_TYPE_RTP, MAX_PORT, MAX_PORT);
+
+  nice_agent_set_port_range (agent, stream->stream_id,
+      NICE_COMPONENT_TYPE_RTCP, MIN_PORT, MAX_PORT);
+
+  if (!nice_agent_gather_candidates (agent, stream->stream_id)) {
+    g_object_unref (agent);
+    return FALSE;
+  }
+
   for (l = stream->priv->transports; l; l = l->next) {
     GstWebRTCICETransport *trans = l->data;
 
@@ -187,20 +201,6 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
   }
 
   g_object_get (stream->ice, "agent", &agent, NULL);
-
-  // set port
-#define FIXED_PORT 10235
-  nice_agent_set_port_range (agent, stream->stream_id,
-      NICE_COMPONENT_TYPE_RTP, FIXED_PORT, FIXED_PORT);
-
-  nice_agent_set_port_range (agent, stream->stream_id,
-      NICE_COMPONENT_TYPE_RTCP, FIXED_PORT, FIXED_PORT);
-
-  if (!nice_agent_gather_candidates (agent, stream->stream_id)) {
-    g_object_unref (agent);
-    return FALSE;
-  }
-
   g_object_unref (agent);
   return TRUE;
 }
