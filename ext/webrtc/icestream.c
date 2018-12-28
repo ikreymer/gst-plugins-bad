@@ -179,6 +179,15 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
   if (stream->priv->gathered)
     return TRUE;
 
+  for (l = stream->priv->transports; l; l = l->next) {
+    GstWebRTCICETransport *trans = l->data;
+
+    gst_webrtc_ice_transport_gathering_state_change (trans,
+        GST_WEBRTC_ICE_GATHERING_STATE_GATHERING);
+  }
+
+  g_object_get (stream->ice, "agent", &agent, NULL);
+
   // set min and max ports if either port is set
   // set same range for RTP and RTCP component types
   if (stream->ice->min_port || stream->ice->max_port) {
@@ -194,14 +203,6 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
     return FALSE;
   }
 
-  for (l = stream->priv->transports; l; l = l->next) {
-    GstWebRTCICETransport *trans = l->data;
-
-    gst_webrtc_ice_transport_gathering_state_change (trans,
-        GST_WEBRTC_ICE_GATHERING_STATE_GATHERING);
-  }
-
-  g_object_get (stream->ice, "agent", &agent, NULL);
   g_object_unref (agent);
   return TRUE;
 }
