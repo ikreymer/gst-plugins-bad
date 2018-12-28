@@ -63,6 +63,8 @@ enum
   PROP_TURN_SERVER,
   PROP_CONTROLLER,
   PROP_AGENT,
+  PROP_MIN_PORT,
+  PROP_MAX_PORT,
 };
 
 static guint gst_webrtc_ice_signals[LAST_SIGNAL] = { 0 };
@@ -748,6 +750,15 @@ gst_webrtc_ice_set_property (GObject * object, guint prop_id,
       g_object_set_property (G_OBJECT (ice->priv->nice_agent),
           "controlling-mode", value);
       break;
+
+    case PROP_MIN_PORT:
+      ice->min_port = g_value_get_int (value);
+      break;
+
+    case PROP_MAX_PORT:
+      ice->max_port = g_value_get_int (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -845,6 +856,20 @@ gst_webrtc_ice_class_init (GstWebRTCICEClass * klass)
       g_param_spec_object ("agent", "ICE agent",
           "ICE agent in use by this object", NICE_TYPE_AGENT,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /** ice min and max port range
+  */
+  g_object_class_install_property (gobject_class,
+      PROP_MIN_PORT,
+      g_param_spec_int ("min-port", "ICE candidate min port",
+          "minimum port, if any, for local rtp port range",
+          0, TCP_HIGHEST_PORT, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class,
+      PROP_MAX_PORT,
+      g_param_spec_int ("max-port", "ICE candidate max port",
+          "maximum port, if any, for local rtp port range",
+          0, TCP_HIGHEST_PORT, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GstWebRTCICE::on-ice-candidate:

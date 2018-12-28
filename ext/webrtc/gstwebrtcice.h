@@ -49,6 +49,9 @@ struct _GstWebRTCICE
   GstUri                           *turn_server;
 
   GstWebRTCICEPrivate              *priv;
+
+  gint                              min_port;
+  gint                              max_port;
 };
 
 struct _GstWebRTCICEClass
