@@ -863,13 +863,13 @@ gst_webrtc_ice_class_init (GstWebRTCICEClass * klass)
       PROP_MIN_PORT,
       g_param_spec_int ("min-port", "ICE candidate min port",
           "minimum port, if any, for local rtp port range",
-          0, TCP_HIGHEST_PORT, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+          0, 65535, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
       PROP_MAX_PORT,
       g_param_spec_int ("max-port", "ICE candidate max port",
           "maximum port, if any, for local rtp port range",
-          0, TCP_HIGHEST_PORT, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+          0, 65535, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GstWebRTCICE::on-ice-candidate:
