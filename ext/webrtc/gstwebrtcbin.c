@@ -4124,7 +4124,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
 
   g_object_class_install_property (gobject_class,
       PROP_MAX_PORT,
-      g_param_spec_uint ("min-port", "ICE candidate max port",
+      g_param_spec_uint ("max-port", "ICE candidate max port",
           "maximum port, if any, for local rtp port range",
           0, 65535, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
