@@ -50,8 +50,8 @@ struct _GstWebRTCICE
 
   GstWebRTCICEPrivate              *priv;
 
-  gint                              min_port;
-  gint                              max_port;
+  guint                             min_port;
+  guint                             max_port;
 };
 
 struct _GstWebRTCICEClass

@@ -752,11 +752,11 @@ gst_webrtc_ice_set_property (GObject * object, guint prop_id,
       break;
 
     case PROP_MIN_PORT:
-      ice->min_port = g_value_get_int (value);
+      ice->min_port = g_value_get_uint (value);
       break;
 
     case PROP_MAX_PORT:
-      ice->max_port = g_value_get_int (value);
+      ice->max_port = g_value_get_uint (value);
       break;
 
     default:
