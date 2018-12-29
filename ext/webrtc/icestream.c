@@ -190,7 +190,7 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
   g_object_get (stream->ice, "agent", &agent, NULL);
 
   // set min and max ports RTP & RTCP port ranges if either min or max port is set
-  if (!stream->gathering_started) {
+  if (!stream->priv->gathering_started) {
     if (stream->ice->min_rtp_port || stream->ice->max_rtp_port) {
       nice_agent_set_port_range (agent, stream->stream_id,
           NICE_COMPONENT_TYPE_RTP, stream->ice->min_rtp_port,
@@ -209,7 +209,7 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
     return FALSE;
   }
   // mark as gathering started to prevent changing ports after
-  stream->gathering_started = TRUE;
+  stream->priv->gathering_started = TRUE;
 
   g_object_unref (agent);
   return TRUE;
