@@ -325,8 +325,10 @@ enum
   PROP_STUN_SERVER,
   PROP_TURN_SERVER,
   PROP_BUNDLE_POLICY,
-  PROP_MIN_PORT,
-  PROP_MAX_PORT,
+  PROP_MIN_RTP_PORT,
+  PROP_MAX_RTP_PORT,
+  PROP_MIN_RTCP_PORT,
+  PROP_MAX_RTCP_PORT,
 };
 
 static guint gst_webrtc_bin_signals[LAST_SIGNAL] = { 0 };
@@ -4705,8 +4707,10 @@ gst_webrtc_bin_set_property (GObject * object, guint prop_id,
   switch (prop_id) {
     case PROP_STUN_SERVER:
     case PROP_TURN_SERVER:
-    case PROP_MIN_PORT:
-    case PROP_MAX_PORT:
+    case PROP_MIN_RTP_PORT:
+    case PROP_MAX_RTP_PORT:
+    case PROP_MIN_RTCP_PORT:
+    case PROP_MAX_RTCP_PORT:
       g_object_set_property (G_OBJECT (webrtc->priv->ice), pspec->name, value);
       break;
 
@@ -4774,8 +4778,10 @@ gst_webrtc_bin_get_property (GObject * object, guint prop_id,
       break;
     case PROP_STUN_SERVER:
     case PROP_TURN_SERVER:
-    case PROP_MIN_PORT:
-    case PROP_MAX_PORT:
+    case PROP_MIN_RTP_PORT:
+    case PROP_MAX_RTP_PORT:
+    case PROP_MIN_RTCP_PORT:
+    case PROP_MAX_RTCP_PORT:
       g_object_get_property (G_OBJECT (webrtc->priv->ice), pspec->name, value);
       break;
     case PROP_BUNDLE_POLICY:
@@ -4966,18 +4972,31 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
           GST_WEBRTC_BUNDLE_POLICY_NONE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /** ice rtp and rtcp min and max port ranges
+  */
   g_object_class_install_property (gobject_class,
-      PROP_MIN_PORT,
-      g_param_spec_uint ("min-port", "ICE candidate min port",
+      PROP_MIN_RTP_PORT,
+      g_param_spec_uint ("min-rtp-port", "ICE RTP candidate min port",
           "minimum port, if any, for local rtp port range",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
-      PROP_MAX_PORT,
-      g_param_spec_uint ("max-port", "ICE candidate max port",
+      PROP_MAX_RTP_PORT,
+      g_param_spec_uint ("max-rtp-port", "ICE RTP candidate max port",
           "maximum port, if any, for local rtp port range",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (gobject_class,
+      PROP_MIN_RTCP_PORT,
+      g_param_spec_uint ("min-rtcp-port", "ICE RTCP candidate min port",
+          "minimum port, if any, for local rtcp port range",
+          0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class,
+      PROP_MAX_RTCP_PORT,
+      g_param_spec_uint ("max-rtcp-port", "ICE RTCP candidate max port",
+          "maximum port, if any, for local rtcp port range",
+          0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GstWebRTCBin::create-offer:

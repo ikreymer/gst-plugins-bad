@@ -59,8 +59,10 @@ enum
   PROP_TURN_SERVER,
   PROP_CONTROLLER,
   PROP_AGENT,
-  PROP_MIN_PORT,
-  PROP_MAX_PORT,
+  PROP_MIN_RTP_PORT,
+  PROP_MAX_RTP_PORT,
+  PROP_MIN_RTCP_PORT,
+  PROP_MAX_RTCP_PORT,
 };
 
 static guint gst_webrtc_ice_signals[LAST_SIGNAL] = { 0 };
@@ -829,12 +831,20 @@ gst_webrtc_ice_set_property (GObject * object, guint prop_id,
           "controlling-mode", value);
       break;
 
-    case PROP_MIN_PORT:
-      ice->min_port = g_value_get_uint (value);
+    case PROP_MIN_RTP_PORT:
+      ice->min_rtp_port = g_value_get_uint (value);
       break;
 
-    case PROP_MAX_PORT:
-      ice->max_port = g_value_get_uint (value);
+    case PROP_MAX_RTP_PORT:
+      ice->max_rtp_port = g_value_get_uint (value);
+      break;
+
+    case PROP_MIN_RTCP_PORT:
+      ice->min_rtcp_port = g_value_get_uint (value);
+      break;
+
+    case PROP_MAX_RTCP_PORT:
+      ice->max_rtcp_port = g_value_get_uint (value);
       break;
 
     default:
@@ -935,18 +945,30 @@ gst_webrtc_ice_class_init (GstWebRTCICEClass * klass)
           "ICE agent in use by this object", NICE_TYPE_AGENT,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
-  /** ice min and max port range
+  /** ice rtp and rtcp min and max port ranges
   */
   g_object_class_install_property (gobject_class,
-      PROP_MIN_PORT,
-      g_param_spec_uint ("min-port", "ICE candidate min port",
+      PROP_MIN_RTP_PORT,
+      g_param_spec_uint ("min-rtp-port", "ICE RTP candidate min port",
           "minimum port, if any, for local rtp port range",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
-      PROP_MAX_PORT,
-      g_param_spec_uint ("max-port", "ICE candidate max port",
+      PROP_MAX_RTP_PORT,
+      g_param_spec_uint ("max-rtp-port", "ICE RTP candidate max port",
           "maximum port, if any, for local rtp port range",
+          0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class,
+      PROP_MIN_RTCP_PORT,
+      g_param_spec_uint ("min-rtcp-port", "ICE RTCP candidate min port",
+          "minimum port, if any, for local rtcp port range",
+          0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class,
+      PROP_MAX_RTCP_PORT,
+      g_param_spec_uint ("max-rtcp-port", "ICE RTCP candidate max port",
+          "maximum port, if any, for local rtcp port range",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
