@@ -945,8 +945,13 @@ gst_webrtc_ice_class_init (GstWebRTCICEClass * klass)
           "ICE agent in use by this object", NICE_TYPE_AGENT,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
-  /** ice rtp and rtcp min and max port ranges
-  */
+  /**
+   * ice rtp and rtcp min and max port selection ranges
+   * if min and max are set to 0 (default), a random port is chosen
+   * both min-rtp-port and max-rtp-port and/or
+   * min-rtcp-port and max-rtcp-port should be set to
+   * limit port selection for RTP and/or RTCP candidates.
+   */
   g_object_class_install_property (gobject_class,
       PROP_MIN_RTP_PORT,
       g_param_spec_uint ("min-rtp-port", "ICE RTP candidate min port",

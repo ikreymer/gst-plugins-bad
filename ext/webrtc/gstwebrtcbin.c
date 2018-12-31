@@ -4972,8 +4972,13 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
           GST_WEBRTC_BUNDLE_POLICY_NONE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  /** ice rtp and rtcp min and max port ranges
-  */
+  /**
+   * ice rtp and rtcp min and max port selection ranges
+   * if min and max are set to 0 (default), a random port is chosen
+   * both min-rtp-port and max-rtp-port and/or
+   * min-rtcp-port and max-rtcp-port should be set to
+   * limit port selection for RTP and/or RTCP candidates.
+   */
   g_object_class_install_property (gobject_class,
       PROP_MIN_RTP_PORT,
       g_param_spec_uint ("min-rtp-port", "ICE RTP candidate min port",
