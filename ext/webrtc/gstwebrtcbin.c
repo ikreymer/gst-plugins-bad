@@ -4974,33 +4974,39 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
 
   /**
    * ice rtp and rtcp min and max port selection ranges
-   * if min and max are set to 0 (default), a random port is chosen
-   * both min-rtp-port and max-rtp-port and/or
-   * min-rtcp-port and max-rtcp-port should be set to
-   * limit port selection for RTP and/or RTCP candidates.
    */
   g_object_class_install_property (gobject_class,
       PROP_MIN_RTP_PORT,
       g_param_spec_uint ("min-rtp-port", "ICE RTP candidate min port",
-          "minimum port, if any, for local rtp port range",
+          "Minimum port for local rtp port range. ",
+          "If both min-rtp-port and max-rtp-port are 0, a random port is "
+          "chosen. min-rtp-port must be <= max-rtp-port "
+          "(min-rtp-port can be 0 if max-rtp-port is set)",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
       PROP_MAX_RTP_PORT,
       g_param_spec_uint ("max-rtp-port", "ICE RTP candidate max port",
-          "maximum port, if any, for local rtp port range",
+          "Maximum port for local rtp port range. ",
+          "If both max-rtp-port and min-rtp-port are 0, a random port is "
+          "chosen. max-rtp-port must be >= min-rtp-port",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
       PROP_MIN_RTCP_PORT,
       g_param_spec_uint ("min-rtcp-port", "ICE RTCP candidate min port",
-          "minimum port, if any, for local rtcp port range",
+          "Minimum port for local rtcp port range. ",
+          "If both min-rtcp-port and max-rtcp-port are 0, a random port is "
+          "chosen. min-rtcp-port must be <= max-rtcp-port "
+          "(min-rtcp-port can be 0 if max-rtcp-port is set)",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
       PROP_MAX_RTCP_PORT,
       g_param_spec_uint ("max-rtcp-port", "ICE RTCP candidate max port",
-          "maximum port, if any, for local rtcp port range",
+          "Maximum port for local rtcp port range. ",
+          "If both max-rtcp-port and min-rtcp-port are 0, a random port is "
+          "chosen. max-rtcp-port must be >= min-rtcp-port",
           0, 65535, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**

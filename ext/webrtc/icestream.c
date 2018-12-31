@@ -219,7 +219,7 @@ gst_webrtc_ice_stream_gather_candidates (GstWebRTCICEStream * stream)
           NICE_COMPONENT_TYPE_RTCP, stream->ice->min_rtcp_port,
           stream->ice->max_rtcp_port);
     }
-    // mark as gathering started to prevent changing ports again for this stream
+    /* mark as gathering started to prevent changing ports again */
     stream->priv->gathering_started = TRUE;
   }
 
