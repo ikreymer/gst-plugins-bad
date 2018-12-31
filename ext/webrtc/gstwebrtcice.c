@@ -879,6 +879,23 @@ gst_webrtc_ice_get_property (GObject * object, guint prop_id,
     case PROP_AGENT:
       g_value_set_object (value, ice->priv->nice_agent);
       break;
+
+    case PROP_MIN_RTP_PORT:
+      g_value_set_uint (value, ice->min_rtp_port);
+      break;
+
+    case PROP_MAX_RTP_PORT:
+      g_value_set_uint (value, ice->max_rtp_port);
+      break;
+
+    case PROP_MIN_RTCP_PORT:
+      g_value_set_uint (value, ice->min_rtcp_port);
+      break;
+
+    case PROP_MAX_RTCP_PORT:
+      g_value_set_uint (value, ice->max_rtcp_port);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
